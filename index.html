@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regal Roamers</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <header class="nav">
+    <a href="#home" class="logo"><img src="logo.png" alt="Regal Roamers"> REGAL ROAMERS</a>
+    <button class="menu-btn" aria-label="Menu">MENU</button>
+    <nav id="menu">
+      <a href="#tours">Tours</a>
+      <a href="#about">About</a>
+      <a href="#blog">Blog</a>
+      <a href="#contact" class="btn small">Book Now</a>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <div class="hero-text">
+      <p class="tag"><span id="typewriter"></span><span class="cursor-blink">|</span></p>
+      <h1>Adventures That Feel Like Coming Home</h1>
+      <p>Guided treks, camping trips and river expeditions through the wildest corners of the world.</p>
+      <a href="#tours" class="btn">View Tours</a>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div><h3>12+</h3><p>Years Experience</p></div>
+    <div><h3>250+</h3><p>Trips Completed</p></div>
+    <div><h3>5k+</h3><p>Happy Explorers</p></div>
+    <div><h3>30</h3><p>Expert Guides</p></div>
+  </section>
+
+  <section id="tours" class="section">
+    <h2>Popular Tour Packages</h2>
+    <div class="grid">
+      <article class="card">
+        <img class="img" src="trek.jpg" alt="Himalayan Trek">
+        <div class="body"><h3>Himalayan Trek</h3><p>7 days · Moderate</p><span class="price">$450</span></div>
+      </article>
+      <article class="card">
+        <img class="img" src="camp.webp" alt="Forest Camping">
+        <div class="body"><h3>Forest Camping</h3><p>3 days · Easy</p><span class="price">$180</span></div>
+      </article>
+      <article class="card">
+        <img class="img" src="rafting.jpg" alt="River Rafting">
+        <div class="body"><h3>River Rafting</h3><p>2 days · Hard</p><span class="price">$220</span></div>
+      </article>
+      <article class="card">
+        <img class="img" src="desert.jpg" alt="Desert Safari">
+        <div class="body"><h3>Desert Safari</h3><p>4 days · Easy</p><span class="price">$300</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="about" class="section alt">
+    <div class="about">
+      <img class="about-img" src="hikking.avif" alt="Our guides on the trail">
+      <div>
+        <h2>Why Travel With Us</h2>
+        <ul class="checks">
+          <li>Certified local guides</li>
+          <li>Small groups, big memories</li>
+          <li>Eco-friendly, leave-no-trace trips</li>
+          <li>All safety gear included</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="blog" class="section">
+    <h2>From the Blog</h2>
+    <div class="grid">
+      <article class="post"><h3>10 Essentials for Your First Trek</h3><p>What to pack and what to leave behind.</p><a href="#">Read more</a></article>
+      <article class="post"><h3>Camping Under the Stars</h3><p>Best spots for night-sky lovers.</p><a href="#">Read more</a></article>
+      <article class="post"><h3>Rafting Safety 101</h3><p>Stay safe while chasing rapids.</p><a href="#">Read more</a></article>
+    </div>
+  </section>
+
+  <section id="contact" class="section alt">
+    <h2>Book Your Adventure</h2>
+
+    <!-- Shown when logged out -->
+    <div id="authBox" class="auth">
+      <h3 id="authTitle">Log in to book</h3>
+      <button type="button" id="googleBtn" class="btn dark">Continue with Google</button>
+      <div class="or"><span>or</span></div>
+      <form id="authForm">
+        <input type="text" id="authName" placeholder="Full name" class="signup-only" hidden>
+        <input type="email" id="authEmail" placeholder="Email" required>
+        <input type="password" id="authPass" placeholder="Password (min 6 characters)" minlength="6" required>
+        <button type="submit" class="btn dark" id="authSubmit">Log in</button>
+      </form>
+      <p class="switch"><span id="switchText">New here?</span> <a href="#" id="switchLink">Create an account</a></p>
+      <p id="authMsg" role="status"></p>
+    </div>
+
+    <!-- Shown when logged in -->
+    <div id="bookingBox" hidden>
+      <div class="userbar">
+        <span>Signed in as <strong id="userEmail"></strong></span>
+        <button type="button" id="logoutBtn">Log out</button>
+      </div>
+
+      <form id="form" novalidate>
+        <div class="row">
+          <input type="text" name="name" placeholder="Full name *" required>
+          <input type="tel" name="phone" placeholder="Phone number *" required>
+        </div>
+        <input type="email" name="email" placeholder="Email *" required>
+
+        <select name="tour" id="tour" required>
+          <option value="" data-price="0">Select a tour *</option>
+          <option value="Himalayan Trek" data-price="450">Himalayan Trek – $450/person</option>
+          <option value="Forest Camping" data-price="180">Forest Camping – $180/person</option>
+          <option value="River Rafting" data-price="220">River Rafting – $220/person</option>
+          <option value="Desert Safari" data-price="300">Desert Safari – $300/person</option>
+        </select>
+
+        <div class="row">
+          <input type="date" name="date" id="date" required>
+          <input type="number" name="travelers" id="travelers" min="1" max="20" value="1" required>
+        </div>
+
+        <textarea name="message" rows="4" placeholder="Special requests or questions"></textarea>
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off">
+
+        <div class="total">Estimated total: <strong id="total">$0</strong></div>
+        <button class="btn" type="submit" id="submitBtn">Send Booking Request</button>
+        <p id="msg" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer>© 2026 Regal Roamers. All rights reserved.
+    <br>
+     <span class="credit">Made by Naitik Sharma</span>
+  </footer>
+
+  <script src="script.js"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
