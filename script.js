@@ -13,7 +13,9 @@ const totalEl = document.getElementById('total');
 const msg = document.getElementById('msg');
 const submitBtn = document.getElementById('submitBtn');
 
-dateInput.min = new Date().toISOString().split('T')[0];
+// Today's date in the user's LOCAL time (toISOString uses UTC and can be off by a day)
+const now = new Date();
+dateInput.min = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
 function getTotal() {
   const price = Number(tour.selectedOptions[0].dataset.price || 0);
@@ -23,24 +25,49 @@ function getTotal() {
 function updateTotal() { totalEl.textContent = '$' + getTotal(); }
 tour.addEventListener('change', updateTotal);
 travelers.addEventListener('input', updateTotal);
+updateTotal();
 
 form.querySelectorAll('input,select').forEach(el =>
   el.addEventListener('blur', () => el.classList.add('touched')));
 
+function showMsg(type, text) {
+  msg.className = type;
+  msg.textContent = text;
+}
+
+// Tells the user exactly which field is wrong
+function firstProblem() {
+  const checks = [
+    [form.elements.name,      'Please enter your full name.'],
+    [form.elements.phone,     'Please enter your phone number.'],
+    [form.elements.email,     'Please enter a valid email.'],
+    [form.elements.tour,      'Please select a tour.'],
+    [form.elements.date,      form.elements.date.validity.rangeUnderflow
+                                ? 'Travel date cannot be in the past. Please pick today or a later date.'
+                                : 'Please choose a travel date.'],
+    [form.elements.travelers, 'Travelers must be between 1 and 20.']
+  ];
+  for (const [el, text] of checks) {
+    if (!el.checkValidity()) return { el, text };
+  }
+  return null;
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  if (submitBtn.disabled) return; // stop double clicks
 
   if (!window.currentUser) {
-    msg.className = 'err';
-    msg.textContent = 'Please log in to book.';
+    showMsg('err', 'Please log in to book.');
     return;
   }
 
   form.querySelectorAll('input,select').forEach(el => el.classList.add('touched'));
 
-  if (!form.checkValidity()) {
-    msg.className = 'err';
-    msg.textContent = 'Please fill in all required fields.';
+  const problem = firstProblem();
+  if (problem) {
+    showMsg('err', problem.text);
+    problem.el.focus();
     return;
   }
 
@@ -52,10 +79,10 @@ form.addEventListener('submit', async (e) => {
   data._template = 'table';
   data._captcha = 'false';
 
+  // ---- Sending state ----
   submitBtn.disabled = true;
   submitBtn.textContent = 'Sending...';
-  msg.className = '';
-  msg.textContent = '';
+  showMsg('', '');
 
   try {
     const res = await fetch('https://formsubmit.co/ajax/post.naitik@gmail.com', {
@@ -66,8 +93,7 @@ form.addEventListener('submit', async (e) => {
     const result = await res.json();
 
     if (res.ok && (result.success === 'true' || result.success === true)) {
-      msg.className = 'ok';
-      msg.textContent = `Thanks ${data.name}! Your booking request for ${data.tour} was sent. We'll contact you soon.`;
+      showMsg('ok', `Thanks ${data.name}! Your booking request for ${data.tour} was sent. We'll contact you soon.`);
       form.reset();
       form.elements.email.value = window.currentUser.email;
       form.querySelectorAll('.touched').forEach(el => el.classList.remove('touched'));
@@ -77,8 +103,8 @@ form.addEventListener('submit', async (e) => {
       throw new Error(result.message || 'Failed');
     }
   } catch (err) {
-    msg.className = 'err';
-    msg.textContent = 'Could not send. Please try again or email us directly at post.naitik@gmail.com.';
+    console.error('Booking failed:', err);
+    showMsg('err', 'Could not send. Please try again or email us directly at post.naitik@gmail.com.');
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Send Booking Request';

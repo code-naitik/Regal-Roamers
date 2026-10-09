@@ -89,17 +89,45 @@
 
     <!-- Shown when logged out -->
     <div id="authBox" class="auth">
-      <h3 id="authTitle">Log in to book</h3>
+      <div class="auth-tabs" role="tablist">
+        <button type="button" id="tabLogin" class="active" role="tab" aria-selected="true"><span class="roll" data-text="Log in">Log in</span></button>
+        <button type="button" id="tabSignup" role="tab" aria-selected="false"><span class="roll" data-text="Sign up">Sign up</span></button>
+      </div>
+
+      <h3 id="authTitle">Welcome</h3>
+      <p id="authSub" class="auth-sub">Log in to send your booking request.</p>
+
+      <ol id="signupSteps" class="auth-steps" hidden>
+        <li>Create your account</li>
+        <li>Fill in your trip details</li>
+        <li>Send your booking request</li>
+      </ol>
+
       <button type="button" id="googleBtn" class="btn dark">Continue with Google</button>
-      <div class="or"><span>or</span></div>
-      <form id="authForm">
-        <input type="text" id="authName" placeholder="Full name" class="signup-only" hidden>
-        <input type="email" id="authEmail" placeholder="Email" required>
-        <input type="password" id="authPass" placeholder="Password (min 6 characters)" minlength="6" required>
+      <div class="or"><span>or use email</span></div>
+
+      <form id="authForm" novalidate>
+        <div class="field" id="nameField" hidden>
+          <label for="authName">Full name</label>
+          <input type="text" id="authName" placeholder="e.g. Naitik Sharma" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="authEmail">Email</label>
+          <input type="email" id="authEmail" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="authPass">Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="authPass" placeholder="At least 6 characters" autocomplete="current-password" required>
+            <button type="button" id="togglePass" aria-label="Show password">Show</button>
+          </div>
+        </div>
+        <a href="#" id="forgotLink" class="forgot">Forgot password?</a>
         <button type="submit" class="btn dark" id="authSubmit">Log in</button>
       </form>
-      <p class="switch"><span id="switchText">New here?</span> <a href="#" id="switchLink">Create an account</a></p>
+
       <p id="authMsg" role="status"></p>
+      <p class="auth-note">We only use your email to confirm your booking.</p>
     </div>
 
     <!-- Shown when logged in -->

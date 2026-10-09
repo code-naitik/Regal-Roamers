@@ -187,3 +187,55 @@ body{cursor:none}
   .hero h1{font-size:2.3rem}
   .about,.row{grid-template-columns:1fr}
 }
+
+/* ===== Login / Sign up card ===== */
+.auth-tabs{position:relative;display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--black);margin-bottom:24px;background:var(--white);overflow:hidden}
+.auth-tabs::before{content:"";position:absolute;top:0;bottom:0;left:0;width:50%;background:var(--black);transition:transform .4s cubic-bezier(.65,0,.35,1)}
+.auth-tabs[data-mode="signup"]::before{transform:translateX(100%)}
+.auth-tabs button{position:relative;z-index:1;background:transparent;color:var(--black);border:0;padding:12px;font:inherit;font-weight:700;letter-spacing:1px;cursor:pointer;transition:color .3s}
+.auth-tabs button.active{color:var(--white)}
+.auth-sub{color:#555;font-size:.95rem;margin:-10px 0 18px}
+.auth-steps{margin:0 0 18px 20px;font-size:.9rem;color:#333}
+.auth-steps li{padding:2px 0}
+.field{margin:0}
+.field label{display:block;font-size:.85rem;font-weight:700;margin-bottom:6px}
+.pass-wrap{position:relative}
+.pass-wrap input{padding-right:70px}
+.pass-wrap button{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;font:inherit;font-size:.85rem;font-weight:700;text-decoration:underline;cursor:pointer;padding:6px}
+.forgot{align-self:flex-start;margin:-4px 0 4px;font-size:.88rem;font-weight:600;border-bottom:1px solid var(--black)}
+.auth .btn:disabled{opacity:.5;cursor:not-allowed}
+.auth-note{margin-top:16px;font-size:.8rem;color:#777}
+#resendWrap{margin-top:8px;font-size:.9rem}
+#resendWrap a{font-weight:700;border-bottom:2px solid var(--black)}
+
+/* Center the "Welcome back" heading */
+.auth h3{text-align:center}
+
+/* Center the line under the heading */
+.auth-sub{text-align:center}
+
+
+/* ===== Animation when switching Log in <-> Sign up ===== */
+@keyframes slideFromRight{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes slideFromLeft{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.swap-right{animation:slideFromRight .45s cubic-bezier(.22,1,.36,1) backwards}
+.swap-left{animation:slideFromLeft .45s cubic-bezier(.22,1,.36,1) backwards}
+@media (prefers-reduced-motion:reduce){
+  .swap-right,.swap-left{animation:none}
+  .auth-tabs::before{transition:none}
+}
+
+/* ===== Hover effect on Log in / Sign up tabs ===== */
+/* Inactive (white) tab turns BLACK on hover. Active (black) tab turns WHITE on hover. */
+.auth-tabs button{overflow:hidden}
+.auth-tabs button::after{content:"";position:absolute;inset:0;background:var(--black);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,1,.36,1),background-color .3s;z-index:-1}
+.auth-tabs button .roll{display:inline-block;position:relative;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.auth-tabs button .roll::after{content:attr(data-text);position:absolute;left:0;top:130%;color:var(--white);letter-spacing:inherit;transition:color .3s}
+.auth-tabs button.active::after{background:var(--white)}
+.auth-tabs button.active .roll::after{color:var(--black)}
+.auth-tabs button:hover::after{transform:scaleX(1)}
+.auth-tabs button:hover .roll{transform:translateY(-130%)}
+.auth-tabs button:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){
+  .auth-tabs button::after,.auth-tabs button .roll{transition:none}
+}
